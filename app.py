@@ -97,10 +97,12 @@ def home():
         # Prediction
         # -----------------------------
 
-        predictions = model.predict(
-            img_array,
-            verbose=0
-        )
+        print("STEP 1: Image loaded")
+        print("STEP 2: Starting model prediction...")
+
+        predictions = model.predict(img_array, verbose=0)
+
+        print("STEP 3: Model prediction completed")
 
         predicted_index = np.argmax(
             predictions[0]
