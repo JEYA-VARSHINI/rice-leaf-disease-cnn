@@ -1,10 +1,14 @@
+import os
+
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+os.environ["TF_NUM_INTRAOP_THREADS"] = "2"
+os.environ["TF_NUM_INTEROP_THREADS"] = "2"
+
 from flask import Flask, render_template, request
 from tensorflow.keras.models import load_model
 from tensorflow.keras.utils import load_img, img_to_array
 import numpy as np
 import json
-import os
-
 
 app = Flask(__name__)
 
@@ -12,7 +16,7 @@ app = Flask(__name__)
 # -----------------------------
 # Load trained model
 # -----------------------------
-model = load_model("rice_leaf_mobilenetv2.keras")
+model = load_model("rice_leaf_mobilenetv2.keras", compile=False)
 
 
 # -----------------------------
@@ -100,7 +104,7 @@ def home():
         print("STEP 1: Image loaded", flush=True)
         print("STEP 2: Starting model prediction...", flush=True)
 
-        predictions = model.predict(img_array, verbose=0)
+        predictions = model(img_array, training=False).numpy()
 
         print("STEP 3: Model prediction completed", flush=True)
 
